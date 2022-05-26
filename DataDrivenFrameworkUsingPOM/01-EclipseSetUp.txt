@@ -1,0 +1,42 @@
+Open Eclipse
+Create Maven Project
+File ---> New Maven Project --> checkmark create simple project skip archetype selection
+-->continue --> groupid -MyStoreProject , ArtifactId -MyStoreProject -->Finish
+
+Now we can see , our maven project with pom.xml is created
+
+
+Step2:
+create different packages inside src/main/java
+package1   ----> com.mystore.actiondriver   [naming convention to follow com.projectName.giveSomePackageName]
+package2   ----> com.mystore.pageobjects
+package3   ----> com.mystore.dataprovider
+package4	---> com.mystore.utility
+package5   ----> com.mystore.base
+
+
+Step3:
+Inside src/test/java
+Create a package--> com.mystore.testcases
+
+Step4:
+inside src/test/resources
+create a folder --> TestData [where we keep our excel sheet]
+
+
+Step5:
+At project level - right click on project , create a folder Configurations
+here we create config.properties file to read properties , different constants from properties file
+
+Step6:
+create a folder for screenShots at package level
+ScreenShot
+
+Step7.
+create a folder for application logo , and place application logo inside it
+Logo
+
+
+and we have a folder for extent reports as well
+
+

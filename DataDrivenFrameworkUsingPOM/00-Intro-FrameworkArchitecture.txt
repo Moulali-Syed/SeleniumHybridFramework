@@ -1,0 +1,100 @@
+Agenda:
+
+Framework archotecture:
+AUT
+Selenium webdriver
+maven
+testng 
+log4j
+extent reports
+git
+github
+jenkins
+
+Steps to create framework
+
+
+1st component will be page object , where we have different pages
+store all elements in a page , in a page object class
+2nd User Actions stored in ActionDriver
+3rd Utility Components
+4th Config components
+5th Folders
+
+PageObjects  - all page object classes must be interlinked , page chaining model
+  indexpage
+  LoginPage
+  HomePage
+  ProductPage
+  AddToCartpage
+  OrderPage
+this act as object repository
+
+
+ActionDriver -  we need to perform different actions on a webpage
+we write reusable methods
+Scroll
+Click
+SendKeys
+Select
+Waits
+
+Utility Components , we create a seperate package
+we have util class - will store methods related to screenshot 
+ExtentClass
+Log4j
+Listeners
+DataProvider
+
+
+Config components
+pom.xml
+extent-config.xml
+log4j.xml
+config.properties - to read constants from config.properties
+testng.xml
+
+
+Folders
+  Testdata - to store excel sheet
+  Screenshot folder
+  Configuration
+  Drivers
+  Logs
+  ExtentReports
+
+
+on top of this above 5, we have Base class --> is extended by page object classes and ActionDriver
+in base class , we have to read properties file [config file]
+WebDriverInitialization
+BeforeSuite
+AfterSuite
+
+
+Another component is our actual tests - testcase classes will extend base class
+	like com.store.testcases
+      we have seperate testcases for all the functionalities
+		LoginPageTest
+		HomePageTest
+		AddToCartPageTest
+		OrderTest	
+		PaymentTest
+here we put validations , assertions
+
+
+Then we testng.xml file , to run our testcases
+pom.xml [we configure test suite in pom.xml]
+
+Git and GitHub
+Jenkins CI Tool
+
+
+
+we can divide our framework into 3 categories
+ 1.development phase
+ 2.Execution Phase
+ 3.Continuous Integration and maintenance
+
+
+
+

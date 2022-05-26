@@ -1,0 +1,27 @@
+package com.mystore.testcases;
+
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+
+import com.mystore.base.BaseClass;
+import com.mystore.pageobjects.IndexPage;
+
+public class AccountCreationPageTest extends BaseClass{
+
+	IndexPage indexPage;
+	@BeforeMethod
+	public void setup() {
+		launchApp();
+	}
+	
+	@AfterMethod
+	public void teardown() {
+		driver.quit();
+	}
+	
+	public void verifyAccountPageTest() {
+		indexPage = new IndexPage();
+		
+	}
+	
+}

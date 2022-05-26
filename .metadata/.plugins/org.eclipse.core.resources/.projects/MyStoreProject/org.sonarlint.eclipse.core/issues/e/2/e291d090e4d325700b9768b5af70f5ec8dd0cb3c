@@ -1,0 +1,7 @@
+
+e
+java:S1128"2Remove this unused import 'java.sql.DriverAction'.(ìè¼8³—¸ô0H¢RMINORZ
+CODE_SMELL
+—
+java:S1488("dImmediately return this expression instead of assigning it to the temporary variable "myStoreTitle".(šúıœ8îºô0H¦RMINORZ
+CODE_SMELL

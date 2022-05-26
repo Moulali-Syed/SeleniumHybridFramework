@@ -1,0 +1,21 @@
+package com.mystore.pageobjects;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class OrderPage extends BaseClass {
+
+	@FindBy(xpath = "//td[@class='cart_unit']/span/span")
+	WebElement unitPrice;
+
+	@FindBy(id = "total_price")
+	WebElement totalPrice;
+
+	@FindBy(xpath = "//span[text()='Proceed to checkout']")
+	WebElement proceedToCheckOut;
+
+	public OrderPage() {
+		PageFactory.initElements(driver, this);
+	}
+}

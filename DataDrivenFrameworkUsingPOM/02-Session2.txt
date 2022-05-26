@@ -1,0 +1,293 @@
+Navigation and Manual Testcases
+Update POM.xml file
+Creat Config.properties file
+Create BaseClass and ActionDriver
+Write pageObjects and methods in page classes
+
+
+testcases are present in the screen snip attached
+
+======================= ======================= ======================= ======================= ======================= ======================= 
+Navigation and Manual Testcases
+open the application
+http://automationpractice.com/index.php
+
+we will be landing to indexPage --> from there click on SignIn link
+it has create account and sign in
+on signIn we will land to home page
+
+from index page login to signIn --> create account provide email id and create an account
+opens account creation page
+
+we must understand the navigation between pages
+
+in indexpage we have search bar , on searching we will see Search Result page
+
+on click on product , we can see add to cart page
+from there proceed to checkout 
+we have order page
+
+we have sign In page, address page , validate address , add new address
+shipping page
+payment page and choose payment method
+Order Summary page
+ConfirmationPage
+
+======================= ======================= ======================= ======================= ======================= ======================= 
+Update pom.xml file , with different dependencies
+
+Dependencies
+1.selenium
+2.testng  , make sure <scope>compile</scope>  , else if we write testcases in anyother folder other than src/test they will not run   - unit testing framework
+3.search apache poi ---> poi  and poi-ooxml [2 must be added]  - used for excel file
+4.ExtentReports [com.aventstack]  - for reports
+5.Apache Commons IO - commons-io  - used for screenshot
+5.log4j  - artifactId : log4j     - used for logging
+6.WebDriverManager - bonigarcia [driver initialization]
+
+build - related to maven lets see at the time of running project
+
+if we see any error right click on project  ---> maven -->update project
+======================= ======================= ======================= ======================= ======================= ======================= 
+
+
+Create Config.properties file
+inside the Configuration folder
+
+Configuration Folder --> right click --> File --> Config.properties
+
+place the different constants that we are gonna use across in all testcases
+
+Config.properties file
+
+url=http://automationpractice.com/index.php
+username=admin@xyz.com
+password=admin@123
+browser=Chrome
+
+======================= ======================= ======================= ======================= ======================= ======================= 
+Create BaseClass and ActionDriver class:
+
+inside package com.mystore.base - create a class BaseClass.java
+
+		1.load the properties file and launch browser
+
+public class BaseClass {
+
+	public static Properties prop;
+	public static WebDriver driver;
+
+	@BeforeTest
+	public void loadConfig() {
+
+		prop = new Properties();
+		System.out.println("Super Constructor Invoked");
+
+		try {
+			FileInputStream ip = new FileInputStream(
+					System.getProperty("user.dir") + "\\Configuration\\Config.properties");
+
+			prop.load(ip);
+		} catch (FileNotFoundException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+	}
+
+	public static void launchApp() {
+		WebDriverManager.chromedriver().setup();
+		String browserName = prop.getProperty("browser");
+
+		if (browserName.contains("Chrome")) {
+			driver = new ChromeDriver();
+		} else if (browserName.contains("Firefox")) {
+			driver = new FirefoxDriver();
+		} else if (browserName.contains("IE")) {
+			driver = new InternetExplorerDriver();
+		} else if (browserName.contains("Edge")) {
+			driver = new EdgeDriver();
+		}
+
+		//using reusable methods from Action class
+		Action.implicitWait(driver, 10);
+		Action.pageLoadTimeOut(driver, 30);
+
+		driver.get(prop.getProperty("url"));
+	}
+}
+
+
+inside com.mystore.actiondriver , create a Action.java class with all reusable methods
+
+
+======================= ======================= ======================= ======================= ======================= ======================= 
+
+Write pageObjects and methods in page classes
+
+Inside com.mystore.pageobjects  ---> create a page class ---> IndexPage.java
+
+Step1:
+@FindBy(locator="actualLocation")
+WebElement elementName
+	@FindBy(xpath = "//a[@class='login']")
+	WebElement signInBtn;
+like this define all the locators
+
+Step2:
+create constructor and invoke initElements  and all page classes must extends BaseClass
+public IndexPage() {
+	PageFactory.initElements(driver, this);
+}
+
+
+Step3:
+Whenever a link a taking to a new page , we must return the object of that page class 
+public LoginPage clickOnSignIn() {
+	Action.click(driver, signInBtn);
+	return new LoginPage();
+}
+
+======================= ======================= ======================= ======================= ======================= ======================= 
+indexPage
+
+package com.mystore.pageobjects;
+
+import java.sql.DriverAction;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+import com.mystore.actiondriver.Action;
+import com.mystore.base.BaseClass;
+
+public class IndexPage extends BaseClass {
+
+	@FindBy(xpath = "//a[@class='login']")
+	WebElement signInBtn;
+
+	@FindBy(xpath = "//img[@class='logo img-responsive']")
+	WebElement myStoreLogo;
+
+	@FindBy(id = "search_query_top")
+	WebElement searchProductBox;
+
+	@FindBy(name = "submit_search")
+	WebElement searchButton;
+
+	public IndexPage() {
+		PageFactory.initElements(driver, this);
+	}
+
+	public LoginPage clickOnSignIn() {
+		Action.click(driver, signInBtn);
+		return new LoginPage();
+	}
+
+	public boolean validateLogo() {
+		return Action.isDisplayed(driver, myStoreLogo);
+	}
+
+	public String getMyStoreTitle() {
+		String myStoreTitle = driver.getTitle();
+		return myStoreTitle;
+	}
+	
+	public SearchResultPage searchProduct(String productName) {
+		Action.type(searchProductBox, productName);
+		Action.click(driver, searchButton);
+		return new SearchResultPage();
+	}
+}
+======================= ======================= ======================= ======================= ======================= ======================= 
+/**
+ * 
+ */
+package com.mystore.pageobjects;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+import com.mystore.actiondriver.Action;
+import com.mystore.base.BaseClass;
+
+/**
+ * @author MOULALI
+ *
+ */
+public class LoginPage extends BaseClass {
+
+	@FindBy(id = "email")
+	WebElement userName;
+
+	@FindBy(name = "passwd")
+	WebElement password;
+
+	@FindBy(id = "SubmitLogin")
+	WebElement signInBtn;
+
+	@FindBy(name = "email_create")
+	WebElement emailForNewAccount;
+
+	@FindBy(name = "SubmitCreate")
+	WebElement createNewAccountBtn;
+
+	public LoginPage() {
+		PageFactory.initElements(driver, this);
+
+	}
+	
+	public HomePage Login(String uname,String pswd) {
+		Action.type(userName, uname);
+		Action.type(password, pswd);
+		Action.click(driver,signInBtn);
+		return new HomePage();
+	}
+	
+	public AccountCreationPage createNewAccount(String newEmail) {
+		Action.type(emailForNewAccount, newEmail);
+		return new AccountCreationPage();
+	}
+}
+
+
+
+======================= ======================= ======================= ======================= ======================= ======================= 
+package com.mystore.pageobjects;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+import com.mystore.actiondriver.Action;
+import com.mystore.base.BaseClass;
+
+public class HomePage extends BaseClass {
+
+	@FindBy(xpath = "//span[text()='My wishlists']")
+	WebElement myWishList;
+
+	@FindBy(xpath = "//span[text()='Order history and details']")
+	WebElement orderHistory;
+
+	public HomePage() {
+		PageFactory.initElements(driver, this);
+	}
+
+	public boolean validateMyWishList() {
+		return Action.isDisplayed(driver, myWishList);
+	}
+
+	public void validateOrderHistory() {
+		Action.isDisplayed(driver, orderHistory);
+	}
+}
+
+
+
+
+======================= ======================= ======================= ======================= ======================= ======================= 

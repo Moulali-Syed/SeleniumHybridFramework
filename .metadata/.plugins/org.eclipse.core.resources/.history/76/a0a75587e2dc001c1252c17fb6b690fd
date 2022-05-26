@@ -1,0 +1,43 @@
+package com.mystore.testcases;
+
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+
+import com.mystore.base.BaseClass;
+import com.mystore.pageobjects.AddToCartPage;
+import com.mystore.pageobjects.IndexPage;
+import com.mystore.pageobjects.OrderPage;
+import com.mystore.pageobjects.SearchResultPage;
+
+public class OrderPageTest extends BaseClass {
+
+	IndexPage index;
+	SearchResultPage searchResultPage;
+	AddToCartPage addToCartPage;
+	OrderPage orderPage;
+
+	@BeforeMethod
+	public void setup() {
+		launchApp();
+	}
+
+	@AfterMethod
+	public void teardown() {
+		driver.quit();
+	}
+
+	public void verifyTotalPrice() throws Exception {
+		index = new IndexPage();
+		searchResultPage = index.searchProduct("t-shirt");
+		addToCartPage = searchResultPage.clickOnProduct();
+		addToCartPage.enterQuantity("2");
+		addToCartPage.selectSize("M");
+		addToCartPage.clickOnAddToCart();
+		orderPage = addToCartPage.clickOnCheckout();
+		double unitPrice = orderPage.getUnitPrice();
+		double totalPrice = orderPage.getTotalPrice();
+		double totalExpectedPrice = (unitPrice * 2) + 2;
+		Assert.assertEquals(totalPrice, totalExpectedPrice);
+	}
+}

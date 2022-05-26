@@ -1,0 +1,148 @@
+src/test/java
+It has testcases
+
+create a test class
+IndexPageTest.java
+
+
+public class IndexPageTest extends BaseClass {
+
+	IndexPage indexPage;
+
+	@BeforeMethod
+	public void setup() {
+		launchApp();
+	}
+
+	@AfterMethod
+	public void tearDown() {
+		driver.quit();
+	}
+
+	@Test
+	public void verifyLogo() {
+		indexPage = new IndexPage();
+		boolean result = indexPage.validateLogo();
+		Assert.assertTrue(result);
+	}
+
+	@Test
+	public void verifyTitle() {
+		String actTitle = indexPage.getMyStoreTitle();
+		Assert.assertEquals(actTitle, "My Store");
+	}
+
+}
+
+======================================================================================================================================================================================
+
+java.lang.NullPointerException: Cannot invoke "com.mystore.pageobjects.LoginPage.login(String, String)" because "this.loginPage" is null
+
+I have declared
+IndexPage indexPage;
+	LoginPage loginPage;
+	HomePage homePage;
+	
+here i missed
+indexPage = new IndexPage();
+		indexPage.clickOnSignIn();
+		 loginPage.login(prop.getProperty("username"), prop.getProperty("password"));
+
+because i have just declared and not used the loginPage , thus it is throwing null pointer exception
+i must have used as below
+
+indexPage = new IndexPage();
+loginPage = indexPage.clickOnSignIn();
+homePage = loginPage.login(prop.getProperty("username"), prop.getProperty("password"));
+
+======================================================================================================================================================================================
+
+package com.mystore.testcases;
+
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import com.mystore.base.BaseClass;
+import com.mystore.pageobjects.HomePage;
+import com.mystore.pageobjects.IndexPage;
+import com.mystore.pageobjects.LoginPage;
+
+public class HomePageTest extends BaseClass {
+
+	IndexPage indexPage;
+	LoginPage loginPage;
+	HomePage homePage;
+	
+	@BeforeMethod
+	public void setup() {
+		launchApp();
+	}
+	
+	@AfterMethod
+	public void tearDown() {
+		driver.quit();
+	}
+	
+	@Test
+	public void wishLishTest() {
+		indexPage = new IndexPage();
+		loginPage = indexPage.clickOnSignIn();
+		homePage = loginPage.login(prop.getProperty("username"), prop.getProperty("password"));
+		
+		boolean result = homePage.validateMyWishList();
+		Assert.assertTrue(result);
+	}
+	
+	@Test
+	public void orderHistoryandDetailsTest() {
+		indexPage = new IndexPage();
+		loginPage = indexPage.clickOnSignIn();
+		homePage = loginPage.login(prop.getProperty("username"), prop.getProperty("password"));
+		
+		boolean result = homePage.validateOrderHistory();;
+		Assert.assertTrue(result);
+	}
+}
+======================================================================================================================================================================================
+package com.mystore.testcases;
+
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import com.mystore.base.BaseClass;
+import com.mystore.pageobjects.AccountCreationPage;
+import com.mystore.pageobjects.IndexPage;
+import com.mystore.pageobjects.LoginPage;
+
+public class AccountCreationPageTest extends BaseClass {
+
+	IndexPage indexPage;
+	LoginPage loginPage;
+	AccountCreationPage accountCreationPage;
+
+	@BeforeMethod
+	public void setup() {
+		launchApp();
+	}
+
+	@AfterMethod
+	public void teardown() {
+		driver.quit();
+	}
+
+	@Test
+	public void verifyAccountPageTest() {
+		indexPage = new IndexPage();
+		loginPage = indexPage.clickOnSignIn();
+		accountCreationPage = loginPage.createNewAccount("jhsdfge@gmail.com");
+		boolean result = accountCreationPage.validateAccountCreatePage();
+		Assert.assertTrue(result);
+	}
+
+}
+
+

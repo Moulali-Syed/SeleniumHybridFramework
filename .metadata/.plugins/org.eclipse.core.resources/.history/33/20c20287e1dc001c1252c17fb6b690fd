@@ -1,0 +1,31 @@
+package com.mystore.testcases;
+
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+
+import com.mystore.base.BaseClass;
+import com.mystore.pageobjects.AddToCartPage;
+import com.mystore.pageobjects.IndexPage;
+import com.mystore.pageobjects.SearchResultPage;
+
+public class OrderPageTest extends BaseClass {
+
+	IndexPage index;
+	SearchResultPage searchResultPage;
+	AddToCartPage addToCartPage;
+
+	@BeforeMethod
+	public void setup() {
+		launchApp();
+	}
+
+	@AfterMethod
+	public void teardown() {
+		driver.quit();
+	}
+	
+	public void verifyTotalPrice() {
+		index = new IndexPage();
+		
+	}
+}

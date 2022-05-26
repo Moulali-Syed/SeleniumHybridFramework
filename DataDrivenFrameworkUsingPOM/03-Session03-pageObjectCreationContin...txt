@@ -1,0 +1,281 @@
+public class AccountCreationPage extends BaseClass {
+
+	@FindBy(xpath = "//h1[text()='Create an account']")
+	WebElement formTitle;
+
+	public AccountCreationPage() {
+		PageFactory.initElements(driver, this);
+	}
+
+	public boolean validateAccountCreatePage() {
+		return Action.isDisplayed(driver, formTitle);
+	}
+}
+
+================ ================  ================ ================ ================ ================
+
+package com.mystore.pageobjects;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+import com.mystore.actiondriver.Action;
+import com.mystore.base.BaseClass;
+
+public class SearchResultPage extends BaseClass {
+
+	
+	@FindBy(xpath="//*[@id='center_column']//img")
+	WebElement productResult;
+	
+	
+	public SearchResultPage() {
+		PageFactory.initElements(driver,this);
+	}
+	
+	public boolean isProductAvailable() {
+		return Action.isDisplayed(driver, productResult);
+	}
+	
+	public AddToCartPage clickOnProduct() {
+		Action.click(driver, productResult);
+		return new AddToCartPage();
+	}
+}
+
+
+
+
+================ ================  ================ ================ ================ ================
+
+package com.mystore.pageobjects;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+import com.mystore.actiondriver.Action;
+import com.mystore.base.BaseClass;
+
+public class AddToCartPage extends BaseClass {
+
+	@FindBy(id = "quantity_wanted")
+	WebElement quantity;
+
+	@FindBy(name = "group_1")
+	WebElement size;
+
+	@FindBy(xpath = "//span[text()='Add to cart']")
+	WebElement addToCartBtn;
+
+	@FindBy(xpath = "//*[@id='layer_cart']//h2/i")
+	WebElement addToCartMessage;
+
+	@FindBy(xpath = "//span[contains(text(),'Proceed to checkout')]")
+	WebElement proceedToCheckOutBtn;
+
+	public AddToCartPage() {
+		PageFactory.initElements(driver, this);
+	}
+
+	public void enterQuantity(String quant) {
+		Action.type(quantity, quant);
+	}
+
+	public void selectSize(String size1) {
+		Action.selectByVisibleText(size1, size);
+	}
+
+	public void clickOnAddToCart() {
+		Action.click(driver, addToCartBtn);
+	}
+
+	public boolean validateAddToCart() {
+		return Action.isDisplayed(driver, addToCartMessage);
+	}
+
+	public OrderPage clickOnCheckout() throws Exception {
+		Action.JSClick(driver, proceedToCheckOutBtn);
+		return new OrderPage();
+	}
+}
+
+
+
+
+
+================ ================  ================ ================ ================ ================
+package com.mystore.pageobjects;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+import com.mystore.actiondriver.Action;
+import com.mystore.base.BaseClass;
+
+public class OrderPage extends BaseClass {
+
+	@FindBy(xpath = "//td[@class='cart_unit']/span/span")
+	WebElement unitPrice;
+
+	@FindBy(id = "total_price")
+	WebElement totalPrice;
+
+	@FindBy(xpath = "//span[text()='Proceed to checkout']")
+	WebElement proceedToCheckOut;
+
+	public OrderPage() {
+		PageFactory.initElements(driver, this);
+	}
+
+	public double getUnitPrice() {
+		String unitPrice1 = unitPrice.getText();
+		String unit = unitPrice1.replaceAll("[^a-zA-Z0-9]", "");
+		double finalUnitPrice = Double.parseDouble(unit);
+		return finalUnitPrice / 100;
+
+	}
+
+	public double getTotalPrice() {
+		String totalPrice1 = unitPrice.getText();
+		String tot = totalPrice1.replaceAll("[^a-zA-Z0-9]", "");
+		double finalTotalPrice = Double.parseDouble(tot);
+		return finalTotalPrice / 100;
+
+	}
+
+	public LoginPage clickOnCheckOut() {
+		Action.click(driver, proceedToCheckOut);
+		return new LoginPage();
+	}
+
+}
+
+
+
+
+
+================ ================  ================ ================ ================ ================
+
+package com.mystore.pageobjects;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+import com.mystore.actiondriver.Action;
+import com.mystore.base.BaseClass;
+
+public class ShippingPage extends BaseClass {
+
+	@FindBy(id = "cgv")
+	WebElement terms;
+
+	@FindBy(xpath = "//button/span[contains(text(),'Proceed to checkout')]")
+	WebElement proceedToCheckOutBtn;
+
+	public ShippingPage() {
+		PageFactory.initElements(driver, this);
+	}
+
+	public void checkTheTerms() {
+		Action.click(driver, proceedToCheckOutBtn);
+	}
+
+	public PaymentPage clickOnProceedToCheckOut() {
+		Action.click(driver, proceedToCheckOutBtn);
+		return new PaymentPage();
+	}
+}
+
+
+================ ================  ================ ================ ================ ================
+package com.mystore.pageobjects;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+import com.mystore.actiondriver.Action;
+import com.mystore.base.BaseClass;
+
+public class PaymentPage  extends BaseClass{
+
+	
+	@FindBy(xpath="//a[contains(text(),'Pay by bank wire')]")
+	WebElement bankWireMethod;
+	
+	@FindBy(xpath="//a[contains(text(),'Pay by check']")
+	WebElement payByCheckMethod;
+	
+	
+	public PaymentPage() {
+		PageFactory.initElements(driver,this);
+	}
+	
+	public OrderSummary clickOnPaymentMethod() {
+		Action.click(driver, bankWireMethod);
+		return new OrderSummary();
+	}
+	
+	
+}
+================ ================  ================ ================ ================ ================
+
+package com.mystore.pageobjects;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+import com.mystore.actiondriver.Action;
+import com.mystore.base.BaseClass;
+
+public class OrderSummary extends BaseClass {
+
+	@FindBy(xpath = "//span[contains(text(),''I confirm my order)]")
+	WebElement confirmOrder;
+
+	public OrderSummary() {
+		PageFactory.initElements(driver, this);
+	}
+	
+	public void clickOnConfirmOrderBtn() {
+		Action.click(driver, confirmOrder);
+	}
+}
+
+
+================ ================  ================ ================ ================ ================
+
+package com.mystore.pageobjects;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+import com.mystore.actiondriver.Action;
+import com.mystore.base.BaseClass;
+
+public class OrderConfirmationPage extends BaseClass {
+
+	@FindBy(xpath = "//p[@class='alert alert-success']")
+	WebElement confirmMessage;
+
+	public OrderConfirmationPage() {
+		PageFactory.initElements(driver, this);
+	}
+
+	public String validateConfirmMessage() {
+		
+		String confirmMsg = confirmMessage.getText();
+		return confirmMsg;
+	}
+}
+
+
+
+================ ================  ================ ================ ================ ================
+

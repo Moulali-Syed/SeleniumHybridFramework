@@ -1,0 +1,21 @@
+package com.mystore.pageobjects;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class AddToCartPage {
+
+	@FindBy(id = "quantity_wanted")
+	WebElement quantity;
+
+	@FindBy(name = "group_1")
+	WebElement size;
+
+	@FindBy(xpath = "//span[text()='Add to cart']")
+	WebElement addToCartBtn;
+
+	public AddToCartPage() {
+		PageFactory.initElements(driver, this);
+	}
+}
